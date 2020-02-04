@@ -1,0 +1,36 @@
+# OS
+.DS_Store
+thumbs.db
+
+# IDE & Editor
+.idea/*
+!.idea/vcs.xml
+!.idea/runConfigurations/
+
+# Node
+coverage
+node_modules/
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.node_repl_history
+.yarn-integrity
+
+# gitkeep
+!.gitkeep
+
+# Project
+dist/
+reports/
+lib/
+cjs/
+esm/
+!bin/lib/
+types/
+.env
+*.tgz
+*.tsbuildinfo
+yarn.lock
+package-lock.json

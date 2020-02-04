@@ -1,0 +1,59 @@
+{
+  "name": "one_chain",
+  "version": "1.0.0",
+  "author": "Link <xie.al@qq.com>",
+  "description": "One library rule them all",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BlockABC/one_chain_ckb.git"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "reboot": "yarn run clean && yarn run bootstrap",
+    "bootstrap": "lerna bootstrap --use-workspaces",
+    "clean": "lerna clean -y && rm -rf node_modules",
+    "clean:build": "lerna run clean:build",
+    "dev": "yarn run dev:node",
+    "dev:node": "lerna exec --scope @onechain/pack -- yarn run dev:node",
+    "dev:web": "lerna exec --scope @onechain/pack -- yarn run dev:web",
+    "build": "lerna exec --scope @onechain/pack -- yarn run build",
+    "serve": "webpack-dev-server --config dev-server/dev-server.config.js",
+    "lint": "eslint . --ext .js,.ts --fix",
+    "lint:nofix": "eslint . --ext .js,.ts",
+    "test": "jest",
+    "commit": "npx git-cz",
+    "prepare-release": "sh build/prepare-release.sh",
+    "release": "node build/release.js"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^3.0.6",
+    "@semantic-release/exec": "^4.0.0",
+    "@semantic-release/git": "^8.0.0",
+    "@types/lodash": "^4.14.0",
+    "@types/node": "^10.12.0",
+    "@types/node-fetch": "^2.1.0",
+    "@types/jest": "^24.0.23",
+    "babel-eslint": "^10.0.2",
+    "commander": "^2.19.0",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "3.0.2",
+    "conventional-changelog-cli": "^2.0.31",
+    "concurrently": "^5.0.0",
+    "dotenv": "^6.2.0",
+    "eslint": "^6.6.0",
+    "eslint-config-blockabc": "^0.9.0",
+    "jest": "^24.9.0",
+    "lerna": "^3.15.0",
+    "node-fetch": "^2.3.0",
+    "semantic-release": "^16.0.1",
+    "typescript": "^3.7.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
