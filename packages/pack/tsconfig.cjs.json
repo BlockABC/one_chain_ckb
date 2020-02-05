@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.cjs.json",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationDir": "types/",
+    "rootDir": "src/",
+    "outDir": "cjs/"
+  },
+  "references": [
+    { "path": "../core/tsconfig.cjs.json" },
+    { "path": "../ckb/tsconfig.cjs.json" }
+  ],
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "src/ckb.es5.ts"
+  ]
+}
