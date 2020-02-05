@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>One Chain</title>
+
+  <script type="text/javascript" charset="utf-8" src="static/lodash.min.js"></script>
+  <script type="text/javascript" charset="utf-8" src="static/vue.js"></script>
+  <script type="text/javascript" charset="utf-8" src="static/v-jsoneditor.min.js"></script>
+
+  <link rel="stylesheet" href="static/bootstrap.min.css">
+  <style>
+    body {
+      padding: 0.5rem;
+    }
+
+    h2 {
+      margin: 0;
+    }
+
+    .container-fluid>.row+.row {
+      margin-top: 1rem;
+    }
+
+    .form-group .input-group+.input-group {
+      margin-top: 1rem;
+    }
+
+    .form-group .input-group+.form-check {
+      margin-top: 1rem;
+    }
+
+    .form-group .btn.btn-primary {
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script type="text/javascript" charset="utf-8" src="./ckb.umd.js"></script>
+  <script>
+    Vue.component('ckb-test', {
+      template: `
+        <div class="row">
+          <div class="col">
+            <div id="abcid-test" class="card">
+              <div class="card-header">
+                <h2>{{ chainTypeUpper }}</h2>
+              </div>
+              <div class="card-body">
+                <form>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">{{chainTypeUpper}}.init</label>
+                    <div class="col-sm-10">
+                      <v-jsoneditor :cache="chainType + '-initParams'" v-model="initParams"></v-jsoneditor>
+                    </div>
+                    <div class="col-sm-10 offset-2">
+                      <button class="btn btn-primary" @click.prevent="init">init</button>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">{{chainTypeUpper}}.buildTransaction</label>
+                    <div class="col-sm-10">
+                      <v-jsoneditor :cache="chainType + '-buildTransactionParams'" v-model="buildTransactionParams"></v-jsoneditor>
+                    </div>
+                    <div class="col-sm-10 offset-2">
+                      <button class="btn btn-primary" @click.prevent="buildTransaction">buildTransaction</button>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Transaction.edit</label>
+                    <div class="col-sm-10">
+                      <v-jsoneditor :cache="chainType + '-editTransactionParams'" v-model="editTransactionParams"></v-jsoneditor>
+                    </div>
+                    <div class="col-sm-10 offset-2">
+                        <button class="btn btn-primary" @click.prevent="edit">edit</button>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">{{chainTypeUpper}}.pushTransaction</label>
+                    <div class="col-sm-10">
+                      <textarea class="form-control" rows="10" v-model="rawTransaction"></textarea>
+                      <button class="btn btn-primary" @click.prevent="pushTransaction">pushTransaction</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+      data () {
+        return {
+          chainTypeUpper: 'CKB',
+          chainType: 'ckb',
+          initParams: {
+            rpcnode: {
+              chainId: 'mainnet',
+              chainType: 'ckb',
+              baseUrl: 'https://ckb.abcwallet.com/api'
+            },
+            keypairs: [
+              {
+                address: '',
+                privateKey: ''
+              }
+            ]
+          },
+          buildTransactionParams: {
+            froms: [
+              {
+                "addres": ''
+              }
+            ],
+            tos: [
+              {
+                address: '',
+                value: '6100000000'
+              }
+            ],
+            memos: [],
+            changeAddress: ''
+          },
+          editTransactionParams: {
+            fee: null,
+            feeRate: null,
+            tos: [],
+            memos: [],
+            keypairs: null,
+            changeAddress: '',
+          },
+          rawTransaction: ''
+        }
+      },
+      methods: {
+        init () {
+          const ConsoleLogger = onechain.core.ConsoleLogger
+          const logger = new ConsoleLogger(this.chainTypeUpper, ConsoleLogger.Level.Trace)
+          const rpcnode = new onechain.core.RPCNode(this.initParams.rpcnode)
+          const provider = new onechain[this.chainType][this.chainType.toUpperCase()]({ rpcnode, keypairs: this.initParams.keypairs, logger })
+
+          this.$options.provider = provider
+        },
+        async buildTransaction () {
+          this.$options.tx = await this.$options.provider.buildTransaction(this.buildTransactionParams)
+          console.log(this.$options.tx.toJSON())
+          console.log(this.$options.tx.toHex())
+        },
+        edit () {
+          this.$options.tx.edit(this.editTransactionParams)
+          console.log(this.$options.tx.toJSON())
+          console.log(this.$options.tx.toHex())
+        },
+        async pushTransaction () {
+          const txId = await this.$options.provider.pushTransaction({ transaction: this.rawTransaction })
+          console.log(`Transaction ID: ${txId}`)
+        },
+      }
+    })
+
+    const app = new Vue({
+      el: '#app',
+      template: `
+        <div id="app" class="container-fluid">
+          <div class="alert alert-primary" role="alert">
+            浏览器请打开控制台查看调试信息，移动端请打开 Safari/Chrome 的远程调试面板。
+          </div>
+
+          <ckb-test></ckb-test>
+
+          <div class="position-fixed" style="top: 0; right: 0; z-index: 1; background: rgba(0, 0, 0, 0.3)">
+            <ul>
+              <li><a href="#ckb-test">ckb-test</a></li>
+            </ul>
+          </div>
+        </div>
+      `,
+    })
+  </script>
+</body>
+</html>
