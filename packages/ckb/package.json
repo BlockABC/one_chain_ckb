@@ -1,0 +1,40 @@
+{
+  "name": "@onechain/ckb",
+  "version": "1.0.0",
+  "author": "Link <xie.al@qq.com>",
+  "description": "CKB development SDK.",
+  "license": "MIT",
+  "main": "./cjs/index.js",
+  "module": "./esm/index.js",
+  "types": "types",
+  "files": [
+    "dist/",
+    "esm/",
+    "cjs/",
+    "types/"
+  ],
+  "scripts": {
+    "prebuild": "yarn run clean:build",
+    "build": "tsc -b",
+    "dev": "tsc -b -w",
+    "lint": "eslint --ext .ts,.js,.vue --fix src/ test/",
+    "lint:nofix": "eslint --ext .ts,.js,.vue src/ test/",
+    "test": "jest",
+    "clean:build": "rm -rf esm cjs types *.tsbuildinfo"
+  },
+  "peerDependencies": {
+    "@onechain/core": "*"
+  },
+  "dependencies": {
+    "bip32": "^2.0.0",
+    "bip39": "^3.0.2",
+    "@nervosnetwork/ckb-sdk-core": "0.26.3",
+    "@nervosnetwork/ckb-sdk-rpc": "0.26.3",
+    "@nervosnetwork/ckb-sdk-utils": "0.26.3",
+    "decimal.js": "^10.2.0",
+    "node-fetch": "^2.3.0"
+  },
+  "devDependencies": {
+    "@nervosnetwork/ckb-types": "0.26.3"
+  }
+}
