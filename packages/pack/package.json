@@ -1,6 +1,6 @@
 {
   "name": "@onechain/pack",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Link <xie.al@qq.com>",
   "description": "Webpack scripts for CKB SDK.",
   "license": "MIT",

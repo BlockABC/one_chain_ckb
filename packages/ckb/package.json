@@ -1,6 +1,6 @@
 {
   "name": "@onechain/ckb",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "Link <xie.al@qq.com>",
   "description": "CKB development SDK.",
   "license": "MIT",
