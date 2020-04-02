@@ -3,12 +3,16 @@
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+[README](README.md) | [中文文档](README.zh.md)
 
-## Why another CKB SDK?
+
+## Why?
+
+@onechain/ckb is base on [ckb-sdk-js](https://github.com/nervosnetwork/ckb-sdk-js), but WHY?
 
 ### Build transactions base on cell model with ease
 
-With @onechain/ckb you only need addresses and value to create transactions no matter it is 1 to many or many to many:
+With @onechain/ckb you only need addresses and values to create transactions, no matter one-to-many or many-to-many:
 
 ```ts
 const tx = await ckb.buildTransaction({
@@ -23,7 +27,7 @@ const tx = await ckb.buildTransaction({
 })
 ```
 
-And that's all! @onechain/ckb will fetch cells of giving addresses automatically for you, then it will build transaction base on a robust cell selecting algorithm.
+And that's all! @onechain/ckb will fetch cells of giving addresses automatically, then it will build transaction base on a robust cell selecting algorithm.
 After that, you can easily reach key information about the transaction:
 
 | Properties |                Description                |
@@ -45,7 +49,8 @@ tx.edit({ feeRate: 3 }) // set transaction fee rate to 3 shannon/Byte
 
 ### Build transaction without signing, then signin with a cold wallet
 
-Do not give @onechain/ckb keypair, then you get the unsigned transaction, after that signing whenever you want:
+@onechain/ckb can create transactions without keypair. First you build unsigned transactions without keypairs, and then
+signing with a cold wallet whenever you want:
 
 ```ts
 const tx = ckb.sign({ transaction: unsignedTransaction, unspents: unspentsGetFromTxUnspents })
@@ -53,8 +58,8 @@ const tx = ckb.sign({ transaction: unsignedTransaction, unspents: unspentsGetFro
 
 ### Support HD wallet with ease
 
-No need to take care of derive process of HD wallet, but get keypairs directly. @onechain/ckb will fetch addresses status automatically in
-a optimized way:
+No need to take care of deriving process of HD wallet, but get keypairs with ease. @onechain/ckb will fetch addresses
+status automatically in a optimized way:
 
 ```ts
 const hdwallet = ckb.hdwalletFromMnemonic({ mnemonic: 'your mnemonic words', path: `m/44'/309'/0'`' })
@@ -62,7 +67,8 @@ const hdwallet = ckb.hdwalletFromMnemonic({ mnemonic: 'your mnemonic words', pat
 
 ### Provide commonjs and es6 module at the same time
 
-No matter which module system you choose, you can just import this library easily, because we have faced the same problems before so we sovled it for those follow our way.
+No matter which module system you choose, you can just import this library easily, because we have faced the same problems
+before so we sovled it for those follow our way.
 
 ### Provider umd module for usage in browser directly
 
