@@ -1,5 +1,5 @@
 const path = require('path')
-const semanticRelease = require('semantic-release');
+const semanticRelease = require('semantic-release')
 
 const ROOT = path.dirname(__dirname)
 
@@ -20,6 +20,10 @@ require('dotenv').config({ path: path.join(ROOT, '.env') })
           '@semantic-release/commit-analyzer',
           '@semantic-release/release-notes-generator',
           '@semantic-release/changelog',
+          // Bump version of package.json
+          ['@semantic-release/npm', {
+            npmPublish: false,
+          }],
           // Execute staffs that ci should do
           ['@semantic-release/exec', {
             // unit test
@@ -36,7 +40,12 @@ require('dotenv').config({ path: path.join(ROOT, '.env') })
             ]
           }],
           // Create release and push to github
-          '@semantic-release/github',
+          ['@semantic-release/github', {
+            assets: [
+              ['packages/pack/dist/*.umd.js'],
+              ['packages/pack/dist/*.umd.min.js'],
+            ]
+          }],
         ]
       },
       {
@@ -45,21 +54,23 @@ require('dotenv').config({ path: path.join(ROOT, '.env') })
     )
 
     if (result) {
-      const {lastRelease, commits, nextRelease, releases} = result;
+      const { lastRelease, commits, nextRelease, releases } = result
 
-      console.log(`Published ${nextRelease.type} release version ${nextRelease.version} containing ${commits.length} commits.`);
+      console.log(`Published ${nextRelease.type} release version ${nextRelease.version} containing ${commits.length} commits.`)
 
       if (lastRelease.version) {
-        console.log(`The last release was "${lastRelease.version}".`);
+        console.log(`The last release was "${lastRelease.version}".`)
       }
 
       for (const release of releases) {
-        console.log(`The release was published with plugin "${release.pluginName}".`);
+        console.log(`The release was published with plugin "${release.pluginName}".`)
       }
-    } else {
-      console.log('No release published.');
     }
-  } catch (err) {
+    else {
+      console.log('No release published.')
+    }
+  }
+  catch (err) {
     console.error('The automated release failed with %O', err)
   }
 })()
