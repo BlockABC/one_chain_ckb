@@ -1,6 +1,6 @@
 /*!
  * @license
- * One Chain CKB v0.0.1
+ * One Chain CKB v0.1.0
  * Auth: Link <xie.al@qq.com>
  */
 (function webpackUniversalModuleDefinition(root, factory) {
