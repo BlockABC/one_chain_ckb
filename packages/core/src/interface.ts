@@ -124,6 +124,10 @@ export interface IUTXOTransaction {
     keypairs?: IKeypair[],
     changeAddress?: string,
   }): void,
+
+  toHex (): string,
+
+  toJSON (): any,
 }
 
 export interface IHDWalletAddress {
@@ -141,6 +145,12 @@ export interface IUTXOHDWallet {
   change: IHDWalletAddress[],
 
   getKeypairs ({ type }: { type?: string }): IKeypair[],
+
+  derive (
+    { needSync, syncFromStart }:
+    { needSync?: boolean, syncFromStart?: boolean }
+  ): Promise<void>,
+
   toJSON (): any,
 }
 

@@ -238,11 +238,11 @@ export class Transaction implements IUTXOTransaction {
   }
 
   toHex (): string {
-    return this._toRawTransaction()
+    return helper.serializeRawTransaction(this._toRawTransaction())
   }
 
   toJSON (): any {
-    return this.helper.parseRawTransaction(this._transaction, this._inputs, this._network.id)
+    return this._toRawTransaction()
   }
 
   protected _calcInputOutput (): void {

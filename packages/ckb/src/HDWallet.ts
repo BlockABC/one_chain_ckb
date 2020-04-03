@@ -79,14 +79,14 @@ export class HDWallet {
     this._apiProvider = apiProvider
     this._network = this.helper.getNetworkByChainId(this._rpcnode.chainId)
 
-    !PROD && this.logger.debug('HDWallet.init:', mnemonic)
+    !process.env.PROD && this.logger.debug('HDWallet.init:', mnemonic)
 
     const seedStr = this.helper.mnemonicToSeedSync(mnemonic)
-    !PROD && this.logger.trace('HDWallet.init bip39 seed:', seedStr)
+    !process.env.PROD && this.logger.trace('HDWallet.init bip39 seed:', seedStr)
 
     const seed = Buffer.from(seedStr, 'hex')
     this._root = fromSeed(seed)
-    !PROD && this.logger.trace('HDWallet.init root key:', this._root.toBase58())
+    !process.env.PROD && this.logger.trace('HDWallet.init root key:', this._root.toBase58())
 
     if (this.helper.isArray(path)) {
       if (path.length > 1) {
@@ -135,12 +135,12 @@ export class HDWallet {
    * @return {Promise<HDWallet>}
    */
   static async fromMnemonic (
-    { mnemonic, path, rpcnode, apiProvider, needSync = true, syncfromStart = false }:
-    { mnemonic: string, path: string | string[], rpcnode: RPCNode, apiProvider: IUTXOApiProvider, needSync?: boolean, syncfromStart?: boolean }
+    { mnemonic, path, rpcnode, apiProvider, needSync = true, syncFromStart = false }:
+    { mnemonic: string, path: string | string[], rpcnode: RPCNode, apiProvider: IUTXOApiProvider, needSync?: boolean, syncFromStart?: boolean }
   ): Promise<HDWallet> {
     const wallet = new this()
     await wallet.init({ mnemonic, path, rpcnode, apiProvider })
-    await wallet.derive({ needSync, syncfromStart })
+    await wallet.derive({ needSync, syncFromStart })
     return wallet
   }
 
@@ -179,19 +179,19 @@ export class HDWallet {
    *
    * @param {string|string[]} path
    * @param {boolean} needSync
-   * @param {boolean} syncfromStart
+   * @param {boolean} syncFromStart
    * @return Promise<void>
    */
   async derive (
-    { needSync = true, syncfromStart = false }:
-    { needSync?: boolean, syncfromStart?: boolean }
+    { needSync = true, syncFromStart = false }:
+    { needSync?: boolean, syncFromStart?: boolean }
   ): Promise<void> {
     if (needSync) {
       this.logger.info('HDWallet.derive with sync')
 
       const [receiving, change] = await Promise.all([
-        this._discover(this._path, '0', syncfromStart),
-        this._discover(this._path, '1', syncfromStart),
+        this._discover(this._path, '0', syncFromStart),
+        this._discover(this._path, '1', syncFromStart),
       ])
 
       this._receiving = this._receiving.concat(receiving)
@@ -343,14 +343,14 @@ export class HDWallet {
    * @param {string} path
    * @param {string} isChange
    * @param {IAddress[]} addresses
-   * @param {boolean} [syncfromStart=false]
+   * @param {boolean} [syncFromStart=false]
    * @return {node: BIP32Interface, gap: number, startAt: number}
    */
-  protected _calcFetchStart (path: string, isChange: string, addresses: IAddress[], syncfromStart = false): any {
+  protected _calcFetchStart (path: string, isChange: string, addresses: IAddress[], syncFromStart = false): any {
     let startAt = 0
     let gap = 0
 
-    if (!syncfromStart && addresses.length > 0) {
+    if (!syncFromStart && addresses.length > 0) {
       let lastAddress
       for (const address of addresses) {
         // about gap: https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#account-discovery
@@ -399,16 +399,16 @@ export class HDWallet {
    * @protected
    * @param {string|string[]} path
    * @param {string} isChange
-   * @param {boolean} [syncfromStart=false]
+   * @param {boolean} [syncFromStart=false]
    * @return {Promise<IAddress[]>}
    */
-  protected async _discover (path: string, isChange: string, syncfromStart = false): Promise<IAddress[]> {
+  protected async _discover (path: string, isChange: string, syncFromStart = false): Promise<IAddress[]> {
     let start
     if (isChange === '0') {
-      start = this._calcFetchStart(path, '0', this._receiving, syncfromStart)
+      start = this._calcFetchStart(path, '0', this._receiving, syncFromStart)
     }
     else {
-      start = this._calcFetchStart(path, '1', this._change, syncfromStart)
+      start = this._calcFetchStart(path, '1', this._change, syncFromStart)
     }
 
     return this._batchFetchAddresses(start.node, start.startAt, start.gap, [])

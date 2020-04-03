@@ -57,7 +57,7 @@ export class CKB extends UTXOProvider {
   setKeypairs ({ keypairs }: { keypairs: IKeypair[] }): void {
     this.logger.info('UTXOProvider.setKeypairs')
     this.logger.debug('UTXOProvider.setKeypairs:', keypairs.map((keypair: IKeypair): string => keypair.address))
-    !PROD && this.logger.trace('UTXOProvider.setKeypairs:', keypairs)
+    !process.env.PROD && this.logger.trace('UTXOProvider.setKeypairs:', keypairs)
 
     this._keypairs = keypairs
   }

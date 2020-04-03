@@ -127,7 +127,7 @@ export class BlockABC implements IUTXOApiProvider {
             }
           }
         }
-        !PROD && this.logger.trace('BlockABC.get Response data:', path, ret)
+        !process.env.PROD && this.logger.trace('BlockABC.get Response data:', path, ret)
       }
       else {
         this.logger.error('BlockABC.get Network error:', `${res.status} ${res.statusText}`)
@@ -192,7 +192,7 @@ export class BlockABC implements IUTXOApiProvider {
             }
           }
         }
-        !PROD && this.logger.trace('BlockABC.post Response data: ', ret)
+        !process.env.PROD && this.logger.trace('BlockABC.post Response data: ', ret)
       }
       else {
         this.logger.error('BlockABC.post Network error:', path, `${res.status} ${res.statusText}`)
