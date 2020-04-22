@@ -47,4 +47,4 @@ Want to know how to get started? Go to [example], interfaces are the same in all
 > Before run examples for node, you need cp `.env.example` to `.env` and fill in your testing keypairs, they will be load when running examples.
 
 
-[example]: https://github.com/BlockABC/one_chain_ckb/tree/master/example
+[example]: https://github.com/BlockABC/one_chain_ckb/tree/develop/example

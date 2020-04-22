@@ -3,7 +3,12 @@
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[README](README.md) | [中文文档](README.zh.md)
+[English](README.md) | [中文](README.zh.md)
+
+
+## 文档
+
+[English](https://blockabc.github.io/one_chain_ckb/) | [中文](https://blockabc.github.io/one_chain_ckb/zh-CN/)
 
 
 ## 开发

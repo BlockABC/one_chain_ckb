@@ -100,4 +100,4 @@ const logger = new ConsoleLogger({
 })
 ```
 
-[interface.ts]: https://github.com/BlockABC/one_chain_ckb/blob/master/packages/core/src/interface.ts
+[interface.ts]: https://github.com/BlockABC/one_chain_ckb/blob/develop/packages/core/src/interface.ts

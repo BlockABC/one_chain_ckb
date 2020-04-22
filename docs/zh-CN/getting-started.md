@@ -47,4 +47,4 @@ Node、Electron 以及任何支持 ES5+ 的现代浏览器！
 > 执行 Node 相关示例之前，你需要 `cp .env.example .env` 并在 `.env` 中填入你自己的公私钥对，它们将在运行示例时被自动载入。
 
 
-[example]: https://github.com/BlockABC/one_chain_ckb/tree/master/example
+[example]: https://github.com/BlockABC/one_chain_ckb/tree/develop/example
